@@ -1,6 +1,7 @@
 package com.github.demo.base;
 
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Created by zhuoshangyi on 2016/9/3.
  */
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/spring/spring*.xml")
 @TransactionConfiguration(defaultRollback = false,transactionManager="transactionManager")

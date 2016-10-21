@@ -4,7 +4,6 @@ import com.github.demo.base.TransactionBaseTest;
 import com.github.demo.model.AddressModel;
 import com.github.demo.model.UserModel;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DatabaseSetups;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import org.dbunit.dataset.Column;
@@ -26,7 +25,7 @@ public class UserlServiceTest extends TransactionBaseTest {
 
     @Test
     @DatabaseSetup("/dataset/t_user_s1.xml")
-    @ExpectedDatabase("/dataset/t_user_e1.xml")
+    @ExpectedDatabase(value = "/dataset/t_user_e1.xml",assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testSelectAll() {
         List<UserModel> allUserModels = userService.getAllUsers();
         Assert.assertNotNull(allUserModels);
@@ -34,7 +33,7 @@ public class UserlServiceTest extends TransactionBaseTest {
 
     @Test
     @DatabaseSetup("/dataset/t_user_s1.xml")
-    @ExpectedDatabase("/dataset/t_user_e2.xml")
+    @ExpectedDatabase(value = "/dataset/t_user_e2.xml",assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testDeleteData() {
         userService.delUserById(2);
     }
@@ -42,7 +41,7 @@ public class UserlServiceTest extends TransactionBaseTest {
 
     @Test
     @DatabaseSetup("/dataset/t_user_s1.xml")
-    @ExpectedDatabase(value = "/dataset/t_user_e3.xml", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED)
+    @ExpectedDatabase(value = "/dataset/t_user_e3.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testInsertAndIngoreOrder() {
         UserModel userModel = new UserModel();
         userModel.setUserName("测试4");
@@ -54,7 +53,7 @@ public class UserlServiceTest extends TransactionBaseTest {
 
     @Test
     @DatabaseSetup("/dataset/t_user_s1.xml")
-    @ExpectedDatabase(value = "/dataset/t_user_e4.xml", assertionMode = DatabaseAssertionMode.NON_STRICT_UNORDERED,columnFilters = {ColumnFilter.class})
+    @ExpectedDatabase(value = "/dataset/t_user_e4.xml", assertionMode = DatabaseAssertionMode.NON_STRICT,columnFilters = {ColumnFilter.class})
     public void testIColumnFilter() {
         UserModel userModel = new UserModel();
         userModel.setUserName("测试1");
@@ -84,7 +83,7 @@ public class UserlServiceTest extends TransactionBaseTest {
 
     @Test
     @DatabaseSetup("/dataset/t_user_s1.xml")
-    @ExpectedDatabase(value = "/dataset/t_user_e6.xml")
+    @ExpectedDatabase(value = "/dataset/t_user_e6.xml",assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testUpdateMultiRows()
     {
         List<UserModel> allUsers = userService.getAllUsers();
@@ -95,8 +94,8 @@ public class UserlServiceTest extends TransactionBaseTest {
     }
 
     @Test
-    @DatabaseSetups({@DatabaseSetup("/dataset/t_user_s1.xml"),@DatabaseSetup("/dataset/t_address_s1.xml")})
-    @ExpectedDatabase("/dataset/t_user_e5.xml")
+    @DatabaseSetup(value = {"/dataset/t_user_s1.xml","/dataset/t_address_s1.xml"})
+    @ExpectedDatabase(value = {"/dataset/t_user_e6.xml","/dataset/t_address_e1.xml"})
     public void testUpdateMultiTables()
     {
         UserModel user = userService.getUserById(2);
